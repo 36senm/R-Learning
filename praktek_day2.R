@@ -144,4 +144,16 @@ str_view(xx1, 'C[LX]+')
 str_view(xx1, "CC?")
 str_view(xx1, "p[no]+")
 
+devtools::install_github("nurandi/katadasaR")
+install.packages("tokenizers")
+install.packages("stopwords")
+install.packages("wordcloud")
+#tugas 9
+string1 <- "Informasi tata cara daftar ulang bagi mahasiswa baru TI kurang jelas. Sehingga ketika tanggal terakhir syarat penyerahan berkas daftar ulang, banyak mahasiswa baru yang tidak membawa salah satu syarat daftar ulangnya."
+strsplit(string1, " ")[[1]]
 
+string2 <- "Informasi cara daftar ulang mahasiswa baru TI kurang jelas. Tanggal terakhir syarat penyerahan berkas daftar ulang, banyak mahasiswa baru tidak membawa syarat daftar ulangnya"
+stemming <- function(x){
+  paste(lapply(x,katadasar),collapse = " ")}
+strign2 <- lapply(tokenize_words(string2[]), stemming)
+string2[1]
