@@ -72,12 +72,14 @@ df_filter_ord <- df_filter12 %>%
 df_filter_delayed <- df_flights %>%
   arrange(desc(dep_delay))
 
-  df_filter_earlytake <- df_flights %>%
+df_filter_earlytake <- df_flights %>%
   arrange(dep_delay)
 
 #select()
 df_slcflight <- df_flights %>%
   select(1:10)
+df_slcda <-  df_flights %>%
+  select(day, month, origin)
 
 #mutate()
 df_hour_airtime <- df_flights %>%
@@ -88,16 +90,29 @@ df_distance_km <- df_flights %>%
   arrange(desc(distancekm))
 
 #summ
-df_flights %>%
+#tanpa pipeline
+
+by_day <- group_by(df_flights, year, month, day)
+df_summarize <- summarise(by_day, delay = mean(dep_delay, na.rm = TRUE))
+
+#pake pipeline
+df_summ_byddm <- df_flights %>%
   group_by(day, month, year) %>%
   summarize(delay = mean(dep_delay, na.rm= TRUE))
 
+#tanpa pipeline
 by_origin <- group_by(df_distance_km, origin, dest)
-df_summa <- summarize(by_origin, distance_between = mean(distancekm))
+df_sum_distance <- summarize(by_origin, distance_between = mean(distancekm))
+
+#pake pipeline
+df_sum_distance2 <- df_distance_km %>%
+  group_by(origin, dest) %>%
+  summarize(distance_between = mean(distancekm, na.rm= TRUE)) %>%
+  arrange(desc(distance_between))
 
 df_sum <- df_distance_km %>%
   group_by(distancekm, origin, dest) %>%
-  summarize(distancebyfar = mean(distancekm, na.rm = TRUE))
+  summarize(distancebyfar = mean(distancekm, na.rm = TRUE)) #na.rm = not.avaiable artinya tidak ditunjuka
 
 
 #str
@@ -143,6 +158,9 @@ str_view(xx1, "CC+")
 str_view(xx1, 'C[LX]+')
 str_view(xx1, "CC?")
 str_view(xx1, "p[no]+")
+
+
+
 
 devtools::install_github("nurandi/katadasaR")
 install.packages("tokenizers")
